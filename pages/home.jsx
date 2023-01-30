@@ -18,11 +18,11 @@ import Header from "../components/header/Header";
 import AmbientBackground from "../components/ambient-background/AmbientBackground";
 
 import styles from "./index.module.scss";
+import SuccessScreen from "../components/success-screen/SuccessScreen";
 
 export default function Home({ cls }) {
   const router = useRouter();
   let amount = 0;
-  console.log("color", cls);
   if (cls === "Silver") {
     amount = 0.1;
   } else if (cls === "Gold") {
@@ -30,7 +30,7 @@ export default function Home({ cls }) {
   } else if (cls === "Diamond") {
     amount = 10;
   }
-  console.log("amount", amount);
+ 
 
   // QR code params
   const qrParams = generateQRParams(amount);
@@ -57,12 +57,16 @@ export default function Home({ cls }) {
     data: null,
   });
 
-  useEffect(() => {
-    // navigate to success screen after mint
-    if (status.state === STATES.NFT_MINT_SUCCESS) {
-      router.push(`/success`);
-    }
-  }, [status, router]);
+
+  //DATA FOR PDF
+  const [pdfData, setPdfData] = useState({signer: "", date: "", amount: "", transactionId: "",mint: ""});
+
+  // useEffect(() => {
+  //   // navigate to success screen after mint
+  //   if (status.state === STATES.NFT_MINT_SUCCESS) {
+  //     router.push(`/success`);
+  //   }
+  // }, [status, router]);
 
   useEffect(() => {
     // go to sold out screen if balance is 0
@@ -125,18 +129,24 @@ export default function Home({ cls }) {
                         const signer = getSigner(
                           result.transaction.message.accountKeys
                         );
+                        
+                        
+        
 
                         setStatus({ state: STATES.AWAIT_FOR_NFT_MINT });
+                        setPdfData({...pdfData, transactionId: result.transaction.signatures[0], date: new Date().toLocaleString(), amount: amount, mint: cls});
 
                         // mint or transfer the NFT
                         fetch(`${apiUrl}?signer=${signer}&edition=${cls}`)
                           .then((res) => {
                             if (res.ok) {
+                              res.json().then((data) => {setPdfData((pdfData)=>{
+                                return {...pdfData, signer: data.signer}
+                              })});
                               // success
                               setStatus({
                                 state: STATES.NFT_MINT_SUCCESS,
                               });
-                              console.log("mint success", res);
                             } else {
                               res.json().then((data) => {
                                 setStatus({
@@ -216,6 +226,7 @@ export default function Home({ cls }) {
         {(status.state === STATES.POLL_FOR_SIGNATURE && (
           <PollForSignature qrCodeParams={qrParams} />
         )) ||
+          (status.state === STATES.NFT_MINT_SUCCESS && <SuccessScreen pdfData={pdfData} />) ||
           (status.state === STATES.AWAIT_FOR_VALIDATION && (
             <LoadingScreen
               title="Confirming Transaction"
