@@ -41,7 +41,7 @@ const SuccessScreen = ({pdfData}) => {
     doc.text(`: ${pdfData.signer}`, x+40, 170);
     doc.text(": 1191",  x+40, 180);
   doc.setTextColor("blue")
-    doc.textWithLink(`: ${pdfData.transactionId.slice(0,50)}`,  x+40, 190,{url:`https://solscan.io/tx/${pdfData.transactionId}?cluster=devnet`});
+  doc.textWithLink(`: ${pdfData.transactionId.slice(0,20)}...(View on Solscan)`,  x+40, 190,{url:`https://solscan.io/tx/${pdfData.transactionId}?cluster=devnet`});
   doc.setTextColor("black")
     
     doc.text(`: ${pdfData.mint}`,  x+40, 200);
