@@ -1,6 +1,6 @@
 const path = require("path");
 import { exec } from "child_process";
-
+const editJsonFile = require("edit-json-file");
 export default function handler(req, res) {
   console.log(req.query);
   console.log(req.query.edition);
@@ -8,6 +8,7 @@ export default function handler(req, res) {
   const  {signer}  = req.query;
   const edvalue=req.query.edition;
   let Edition;
+  let file = editJsonFile(`count.json`);
   if(edvalue=='Silver')
   {
     Edition=1;
@@ -56,17 +57,23 @@ export default function handler(req, res) {
       if(Edition==1)
       {
         sc=sc+1;
+        file.set("silver_count",file.get("silver_count")+1);
       }
       if(Edition==2)
       {
         gc=gc+1;
+        file.set("gold_count",file.get("gold_count")+1);
       }
       if(Edition==3)
       {
         dc=dc+1;
+        file.set("diamond_count",file.get("diamond_count")+1);
       }
+      file.save();
+      console.log(file.get());
+      console.log(file.path);
     }
-
+    
     if (success) {
       res.status(200).json({ signer: req.query.signer, success: true });
     } else {

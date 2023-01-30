@@ -13,6 +13,7 @@
 		"@solana/qr-code-styling": "^1.6.0-rc.1",
 		"@solana/web3.js": "^1.32.1",
 		"bignumber.js": "^9.0.2",
+		"edit-json-file": "^1.7.0",
 		"framer-motion": "^6.2.8",
 		"next": "12.1.0",
 		"prop-types": "^15.8.1",

@@ -1,5 +1,5 @@
 import Link from "next/link";
-
+import data from '../count.json';
 export default function MainPage() {
   return (
     // A centerd div with 3 NFT images with their name, price and a link to their page
@@ -68,7 +68,7 @@ export default function MainPage() {
                     data-countdown="2022-10-14T10:45:30"
                     data-expired="This auction has ended"
                   >
-                    3/20000 NFTs minted
+                    {data['silver_count']}/20000 NFTs minted
                   </span>
                 </div>
                 <Link href={{ pathname: "/home", query: { cls: "Silver" } }}>
@@ -136,7 +136,7 @@ export default function MainPage() {
                     data-countdown="2022-10-14T10:45:30"
                     data-expired="This auction has ended"
                   >
-                    0/100 NFTs minted
+                    {data['gold_count']}/100 NFTs minted
                   </span>
                 </div>
                 <Link href={{ pathname: "/home", query: { cls: "Gold" } }}>
@@ -204,7 +204,7 @@ export default function MainPage() {
                     data-countdown="2022-10-14T10:45:30"
                     data-expired="This auction has ended"
                   >
-                    0/10 NFTs minted
+                  {data['diamond_count']}/10 NFTs minted
                   </span>
                 </div>
                 <Link href={{ pathname: "/home", query: { cls: "Diamond" } }}>
