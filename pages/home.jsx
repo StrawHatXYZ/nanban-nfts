@@ -129,7 +129,7 @@ export default function Home({ cls }) {
                         setStatus({ state: STATES.AWAIT_FOR_NFT_MINT });
 
                         // mint or transfer the NFT
-                        fetch(`${apiUrl}?signer=${signer}`)
+                        fetch(`${apiUrl}?signer=${signer}&edition=${cls}`)
                           .then((res) => {
                             if (res.ok) {
                               // success

@@ -1,4 +1,5 @@
 import Link from "next/link";
+
 export default function MainPage() {
   return (
     // A centerd div with 3 NFT images with their name, price and a link to their page
